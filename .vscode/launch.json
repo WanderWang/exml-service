@@ -11,14 +11,13 @@
 			"cwd": ".",
 			"runtimeExecutable": null,
 			"runtimeArgs": [
-				"--nolazy",
-				"--debug-brk=4205"
+				"--nolazy"
 			],
 			"env": {
 				"NODE_ENV": "development"
 			},
 			"externalConsole": false,
-			"sourceMaps": false,
+			"sourceMaps": true,
 			"outDir": null
 		},
 		{

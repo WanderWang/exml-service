@@ -1,9 +1,9 @@
 namespace test  {
-	class HiddenClass {
+	class HiddenClass extends eui.Component {
 		
 	}
 	
-	export class ExportClass {
+	export class ExportClass extends eui.Group {
 		
 	}
 }
