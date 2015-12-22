@@ -80,13 +80,45 @@ function watch(rootFileNames: string[], options: ts.CompilerOptions) {
 			switch (node.kind) {
 				case ts.SyntaxKind.ClassDeclaration:
                     var theType = checker.getTypeAtLocation(node);
+                    
                     if(!(node.flags&ts.NodeFlags.Abstract) &&  hasBaseTypes(theType,base,checker)){
-                        console.log("found class: "+checker.getFullyQualifiedName(checker.getTypeAtLocation(node).getSymbol()));
-                        //var props = theType.getApparentProperties();
-                        var props =checker.getPropertiesOfType(theType);
-                        props.filter(p=>!!(p.flags & ts.SymbolFlags.Property)).forEach(p=>{
-                            console.log("\t",p.getName())
-                        });
+                        var className = checker.getFullyQualifiedName(checker.getTypeAtLocation(node).getSymbol());
+                        var superTypes = checker.getBaseTypes(<ts.InterfaceType>theType);
+                        console.log("found class: "+className);
+                        
+                        superTypes.forEach(t=>console.log("\t => ",checker.getFullyQualifiedName(t.getSymbol())));
+                        
+                        var props = theType.getSymbol().members;
+                        
+                        for(var name in props){
+                            
+                            if(name.indexOf("$")==0)
+                                continue;
+                            
+                            var p = props[name];
+                            
+                            if((p.flags & ts.SymbolFlags.Property)||(p.flags & ts.SymbolFlags.Accessor)){
+                                if(name=="PPP"){
+                                    var aaa = name;
+                                    //console.log(aaa);
+                                }
+                                if(p.declarations[0].flags&(ts.NodeFlags.Protected|ts.NodeFlags.Private))
+                                    continue;
+                                if((p.flags & ts.SymbolFlags.Accessor) && p.declarations.filter(d=>d.kind==ts.SyntaxKind.SetAccessor).length==0)
+                                    continue;
+                                var isPrivate = p.getDocumentationComment().some(c=>c.text.indexOf("@private")>=0);
+                                if(isPrivate)
+                                    continue;
+                                
+                                console.log(name);
+                                
+                                if((p.flags & ts.SymbolFlags.Property)&&p.valueDeclaration&&((<ts.VariableDeclaration>p.valueDeclaration).initializer==null)){
+                                    console.log("\t",name," == null");
+                                }
+                                
+                            }
+                        }
+                        
                     }
 					
 			}
