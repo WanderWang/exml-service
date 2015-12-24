@@ -1,0 +1,22 @@
+{
+  "name": "exml-langauge-server",
+  "description": "EXML implementation of a language server in node.",
+  "version": "0.0.1",
+  "author": "Microsoft Corporation",
+  "license": "MIT",
+  "engines": {
+    "node": "*"
+  },
+  "dependencies": {
+    "libxmljs": "^0.16.1",
+    "sax": "^1.1.4",
+    "vscode-languageserver": "^1.1.0"
+  },
+  "devDependencies": {
+    "typescript": "^1.6.2"
+  },
+  "scripts": {
+    "compile": "installServerIntoExtension ../client ./package.json ./tsconfig.json && tsc -p .",
+    "watch": "installServerIntoExtension ../client ./package.json ./tsconfig.json && tsc --watch -p ."
+  }
+}
