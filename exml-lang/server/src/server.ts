@@ -9,10 +9,11 @@ import {
 	createConnection, IConnection, TextDocumentSyncKind,
 	TextDocuments, ITextDocument, Diagnostic, DiagnosticSeverity,
 	InitializeParams, InitializeResult, TextDocumentIdentifier,
-	CompletionItem, CompletionItemKind
+	CompletionItem, CompletionItemKind,TextDocumentPosition,Range
 } from 'vscode-languageserver';
 
 import * as xml from "./xml-parser";
+import * as sax from "./sax";
 
 // Create a connection for the server. The connection uses 
 // stdin / stdout for message passing
@@ -20,7 +21,15 @@ let connection: IConnection = createConnection(new IPCMessageReader(process), ne
 
 // Create a simple text document manager. The text document manager
 // supports full document sync only
-let documents: TextDocuments = new TextDocuments();
+let documents: TextDocuments = new TextDocuments(); 
+
+interface DocInfo {
+    tree:sax.Tag;
+    lineMap:number[];
+}
+
+let parsedDocs:{ [url:string]:DocInfo } = {};
+
 // Make the text document manager listen on the connection
 // for open, change and close text document events
 documents.listen(connection);
@@ -74,6 +83,10 @@ function validateTextDocument(textDocument: ITextDocument): void {
 	let diagnostics: Diagnostic[] = [];
 	let xmlString = textDocument.getText();
     var xmlDoc = xml.parse(xmlString);
+    parsedDocs[textDocument.uri] = {
+        tree:xmlDoc,
+        lineMap:getLineMap(xmlString)
+    };
     
 	let problems = 0;
     var errors = xmlDoc.errors;
@@ -101,22 +114,69 @@ connection.onDidChangeWatchedFiles((change) => {
 
 
 // This handler provides the initial list of the completion items.
-connection.onCompletion((textDocumentPosition: TextDocumentIdentifier): CompletionItem[] => {
+connection.onCompletion((textDocumentPosition: TextDocumentPosition): CompletionItem[] => {
 	// The pass parameter contains the position of the text document in 
 	// which code complete got requested. For the example we ignore this
 	// info and always provide the same completion items.
-	return [
-		{
-			label: 'TypeScript',
-			kind: CompletionItemKind.Text,
-			data: 1
-		},
-		{
-			label: 'JavaScript',
-			kind: CompletionItemKind.Text,
-			data: 2
-		}
-	]
+    var doc = parsedDocs[textDocumentPosition.uri];
+    var p = textDocumentPosition.position;
+    var position = getPosition(doc.lineMap,p.line,p.character);
+    
+    var node = xml.getNodeAtPosition(doc.tree,position);
+    var tag:sax.Tag;
+    var attr:sax.Attribute;
+    if(node.nodeType == sax.Type.Attribute){
+        tag = (<sax.Attribute>node).parent;
+        attr = <sax.Attribute>node;
+    }
+    else if(node.nodeType == sax.Type.Text||node.nodeType == sax.Type.Cdata){
+        tag = (<sax.Attribute>node).parent;
+    }
+    else{
+        tag = <sax.Tag>node;
+    }
+    
+    var completions:CompletionItem[] = [];
+    
+    if(attr){
+        var inAttr = position>attr.start +attr.name.length;
+        if(inAttr){
+            completions.push({
+                label: attr.name + "123",
+                kind: CompletionItemKind.Property,
+                data: 1
+            });
+            completions.push({
+                label: attr.name + "456",
+                kind: CompletionItemKind.Property,
+                data: 2
+            });
+            completions.push({
+                label: attr.name + "789",
+                kind: CompletionItemKind.Property,
+                data: 3
+            });
+        }
+    }
+    
+    if(tag && !attr) {
+            completions.push({
+                label: tag.name + "123",
+                kind: CompletionItemKind.Property,
+                data: 2
+            });
+            completions.push({
+                label: tag.name + "456",
+                kind: CompletionItemKind.Property,
+                data: 3
+            });
+            completions.push({
+                label: tag.name + "789",
+                kind: CompletionItemKind.Property,
+                data: 4
+            });
+    }
+    return completions;
 });
 
 // This handler resolve additional information for the item selected in
@@ -125,12 +185,14 @@ connection.onCompletionResolve((item: CompletionItem): CompletionItem => {
 	if (item.data === 1) {
 		item.detail = 'TypeScript details',
 		item.documentation = 'TypeScript documentation'
-	} else if (item.data === 2) {
+	} else {
 		item.detail = 'JavaScript details',
 		item.documentation = 'JavaScript documentation'
 	}
 	return item;
 });
+
+
 
 /*
 connection.onDidOpenTextDocument((params) => {
@@ -156,3 +218,25 @@ connection.onDidCloseTextDocument((params) => {
 
 // Listen on the connection
 connection.listen();
+
+
+function getLineMap(text:string):number[]{
+    if(text==null||text == undefined){
+        return [0]
+    };
+    var lineStarts:number[] = [];
+    var lines = text.split('\n');
+    lines.forEach((l,i)=>{
+        if(i==0)
+            lineStarts[0]=0;
+        else{
+            lineStarts[i]=lineStarts[i-1]+lines[i-1].length+1;
+        }
+    })
+    
+    return lineStarts;
+}
+
+function getPosition(lineMap:number[],line:number,char:number){
+    return lineMap[line]+char;
+}

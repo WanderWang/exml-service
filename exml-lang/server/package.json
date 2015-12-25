@@ -8,15 +8,13 @@
     "node": "*"
   },
   "dependencies": {
-    "libxmljs": "^0.16.1",
-    "sax": "^1.1.4",
     "vscode-languageserver": "^1.1.0"
   },
   "devDependencies": {
     "typescript": "^1.6.2"
   },
   "scripts": {
-    "compile": "installServerIntoExtension ../client ./package.json ./tsconfig.json && tsc -p .",
-    "watch": "installServerIntoExtension ../client ./package.json ./tsconfig.json && tsc --watch -p ."
+    "compile": "installServerIntoExtension ../client ./package.json ./tsconfig.json && copy .\\src\\sax.js ..\\client\\server\\sax.js /Y && tsc -p .",
+    "watch": "installServerIntoExtension ../client ./package.json ./tsconfig.json && copy .\\src\\sax.js ..\\client\\server\\sax.js && tsc --watch -p ."
   }
 }

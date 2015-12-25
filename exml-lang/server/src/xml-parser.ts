@@ -1,4 +1,4 @@
-import * as sax from "sax";
+import * as sax from "./sax";
 
 
 
@@ -8,10 +8,12 @@ export function parse(xmlString): sax.Tag {
     var object:sax.Tag = null;
     var namespaces = {};
     var errors:sax.Error[] = [];
+    var attribNodes:sax.Attribute[] = [];
     saxparser.resume();
     saxparser.onerror = function (err) {
         var error:sax.Error = {
-            position : saxparser.position,
+            start : saxparser.startAttribPosition || saxparser.startTagPosition,
+            end:saxparser.position,
             line : saxparser.line,
             column : saxparser.column,
             name:err.message,
@@ -22,11 +24,13 @@ export function parse(xmlString): sax.Tag {
     };
     saxparser.onopentag = function (node: sax.Tag) {
         var attribs = node.attributes;
-        node.nodeType = sax.TagType.Tag;
-        node.attributeNodes = [];
-        node.position = saxparser.position;
+        node.nodeType = sax.Type.Tag;
+        node.attributeNodes = attribNodes.filter(a=>a.start>saxparser.startTagPosition);
+        node.attributeNodes.forEach(a=>a.parent = node);
+        node.start = saxparser.startTagPosition-1;
         node.line = saxparser.line;
         node.column = saxparser.column;
+        node.children = [];
         for (var key in attribs) {
             index = key.indexOf("xmlns:");
             if (index == 0) {
@@ -66,32 +70,31 @@ export function parse(xmlString): sax.Tag {
     
     saxparser.onattribute = function(attr) {
         var attrNode:sax.Attribute = {
-            position : saxparser.position,
-            line : saxparser.line,
-            column : saxparser.column,
+            start : saxparser.startAttribPosition-1,
+            end:saxparser.position,
             name:attr.name,
-            value:attr.value
+            value:attr.value,
+            nodeType:sax.Type.Attribute
         };
-        if (object){
-            object.attributeNodes.push(attrNode);
-        }
+        attribNodes.push(attrNode);
     }
     
     saxparser.onclosetag = function (node) {
+        object.end = saxparser.position;
         if (object.parent)
             object = object.parent;
     };
 
     saxparser.oncdata = function (cdata) {
         if (object && !object.children) {
-            object.nodeType =  sax.TagType.Cdata;;
+            object.nodeType =  sax.Type.Cdata;;
             object.text = cdata;
         }
     };
 
     saxparser.ontext = function (text) {
         if (object && !object.text && !object.children) {
-            object.nodeType =  sax.TagType.Text;;
+            object.nodeType =  sax.Type.Text;;
             object.text = text;
         }
     };
@@ -106,3 +109,30 @@ function toString() {
     return this.text;
 };
 
+
+export function getNodeAtPosition(node:sax.Tag,position:number):sax.Node {
+    if(!node)
+        return null;
+    if(position<node.start || position>node.end)
+        return null;
+    if(node.nodeType!=sax.Type.Tag)
+        return node;
+    
+    for (var index = 0; index < node.children.length; index++) {
+        var element = node.children[index];
+        if(index==0&&element.start > position){
+            break;
+        }
+        var target = getNodeAtPosition(element,position);
+        if(target)
+            return target;
+    }
+    
+    for (var index = 0; index < node.attributeNodes.length; index++) {
+        var attr = node.attributeNodes[index];
+        if(attr.start<=position&&attr.end>=position)
+            return attr;
+    }
+    
+    return node;
+}

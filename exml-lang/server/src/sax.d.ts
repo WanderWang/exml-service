@@ -2,9 +2,8 @@
 // Project: https://github.com/isaacs/sax-js
 // Definitions by: Asana <https://asana.com>
 // Definitions: https://github.com/borisyankov/DefinitelyTyped
-/// <reference path="../node/node.d.ts" />
+/// <reference path="../typings/node/node.d.ts" />
 
-declare module "sax" {
     export var EVENTS: string[];
 
     interface SAXOptions {
@@ -16,21 +15,25 @@ declare module "sax" {
         position?: boolean;
     }
     
-    export const enum TagType {
+    export const enum Type {
         Tag,
         Cdata,
-        Text
+        Text,
+        Attribute
     }
     
     export interface Node {
         name: string;
-        line: number;
-        column: number;
-        position: number;
+        line?: number;
+        column?: number;
+        start: number;
+        end:number;
+        nodeType?:Type;
     }
     
     export interface Attribute extends Node {
         value:string;
+        parent?:Tag;
     }
     export interface Error extends Node {
         message:string;
@@ -40,7 +43,6 @@ declare module "sax" {
         attributes: { [key: string]: string };
         attributeNodes:Attribute[];
         text:string;
-        nodeType:TagType;
         namespace:string;
         localName:string;
         children?:Tag[];
@@ -72,6 +74,7 @@ declare module "sax" {
         error: Error;
         position: number;
         startTagPosition: number;
+        startAttribPosition:number;
         closed: boolean;
         strict: boolean;
         opt: SAXOptions;
@@ -102,5 +105,5 @@ declare module "sax" {
         constructor(strict: boolean, opt: SAXOptions);
         private _parser: SAXParser;
     }
-}
+
 
