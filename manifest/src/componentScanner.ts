@@ -38,7 +38,12 @@ function hasBaseTypes(theType: ts.Type, typeToFind: string, checker: ts.TypeChec
 }
 
 
+
+
 function watch(rootFileNames: string[], options: ts.CompilerOptions) {
+
+
+
     const files: ts.Map<{ version: number }> = {};
 
     // initialize the list of files
@@ -49,9 +54,8 @@ function watch(rootFileNames: string[], options: ts.CompilerOptions) {
 
     // Create the language service files
     var program = ts.createProgram(rootFileNames, options);
-    var sourceCodes = program.getSourceFiles();
-    var checker = program.getTypeChecker();
 
+    var sourceCodes = program.getSourceFiles();
     sourceCodes.forEach(source => {
         if (source.fileName.indexOf("lib.d.ts") >= 0) {
             return;
@@ -59,83 +63,82 @@ function watch(rootFileNames: string[], options: ts.CompilerOptions) {
         if (source.fileName.indexOf("egret.d.ts") >= 0) {
             return;
         }
-        console.log(Date.now());
-        delint(source, "eui.UIComponent");
-        console.log(Date.now());
+        delint(program, source, "eui.UIComponent");
     });
-
-
-    checker = null;
-    sourceCodes.length = 0;
     rootFileNames.length = 0;
     program = null;
     if (global.gc) global.gc();
 
 
+}
 
-    function delint(sourceFile: ts.SourceFile, base: string) {
-        delintNode(sourceFile);
-
-        function delintNode(node: ts.Node) {
-            switch (node.kind) {
-                case ts.SyntaxKind.ClassDeclaration:
-                    var theType = checker.getTypeAtLocation(node);
-
-                    if (!(node.flags & ts.NodeFlags.Abstract) && hasBaseTypes(theType, base, checker)) {
-                        var className = checker.getFullyQualifiedName(checker.getTypeAtLocation(node).getSymbol());
-                        var superTypes = checker.getBaseTypes(<ts.InterfaceType>theType);
-                        console.log("found class: " + className);
-
-                        superTypes.forEach(t => console.log("\t => ", checker.getFullyQualifiedName(t.getSymbol())));
-
-                        var props = theType.getSymbol().members;
-
-                        for (var name in props) {
-
-                            if (name.indexOf("$") == 0)
-                                continue;
-
-                            var p = props[name];
-
-                            if (p.flags & ts.SymbolFlags.Property) {
-                                var result = checker.getTypeAtLocation(p.declarations[0])
-                                console.log(`${p.name}:${checker.typeToString(result)}`)
-                                // console.log()
-                               
-                            }
+var data = {};
 
 
-                            // checker.getTypeAtLocation(p);
-                            // checker.getTypeOfSymbolAtLocation(p);
+function delint(program, sourceFile: ts.SourceFile, base: string) {
 
-                            // if((p.flags & ts.SymbolFlags.Property)||(p.flags & ts.SymbolFlags.Accessor)){
-                            //     if(name=="PPP"){
-                            //         var aaa = name;
-                            //         //console.log(aaa);
-                            //     }
-                            //     if(p.declarations[0].flags&(ts.NodeFlags.Protected|ts.NodeFlags.Private))
-                            //         continue;
-                            //     if((p.flags & ts.SymbolFlags.Accessor) && p.declarations.filter(d=>d.kind==ts.SyntaxKind.SetAccessor).length==0)
-                            //         continue;
-                            //     var isPrivate = p.getDocumentationComment().some(c=>c.text.indexOf("@private")>=0);
-                            //     if(isPrivate)
-                            //         continue;
+    var checker = program.getTypeChecker();
+    delintNode(sourceFile);
 
-                            //     console.log(name);
+    function delintNode(node: ts.Node) {
+        switch (node.kind) {
+            case ts.SyntaxKind.ClassDeclaration:
+                var theType = checker.getTypeAtLocation(node);
 
-                            //     if((p.flags & ts.SymbolFlags.Property)&&p.valueDeclaration&&((<ts.VariableDeclaration>p.valueDeclaration).initializer==null)){
-                            //         console.log("\t",name," == null");
-                            //     }
+                if (!(node.flags & ts.NodeFlags.Abstract) && hasBaseTypes(theType, base, checker)) {
+                    var className = checker.getFullyQualifiedName(checker.getTypeAtLocation(node).getSymbol());
+                    var superTypes = checker.getBaseTypes(<ts.InterfaceType>theType);
+                    console.log("found class: " + className);
+                    data[className] = {};
+                    superTypes.forEach(t => console.log("\t supper classes => ", checker.getFullyQualifiedName(t.getSymbol())));
 
-                            // }
+                    var props = theType.getSymbol().members;
+
+                    for (var name in props) {
+
+                        if (name.indexOf("$") == 0)
+                            continue;
+
+                        var p = props[name];
+
+                        if (p.flags & ts.SymbolFlags.Property) {
+                            var result = checker.getTypeAtLocation(p.declarations[0])
+                            console.log(`${p.name}:${checker.typeToString(result)}`)
+                            // console.log()
+
                         }
 
+
+                        // checker.getTypeAtLocation(p);
+                        // checker.getTypeOfSymbolAtLocation(p);
+
+                        // if((p.flags & ts.SymbolFlags.Property)||(p.flags & ts.SymbolFlags.Accessor)){
+                        //     if(name=="PPP"){
+                        //         var aaa = name;
+                        //         //console.log(aaa);
+                        //     }
+                        //     if(p.declarations[0].flags&(ts.NodeFlags.Protected|ts.NodeFlags.Private))
+                        //         continue;
+                        //     if((p.flags & ts.SymbolFlags.Accessor) && p.declarations.filter(d=>d.kind==ts.SyntaxKind.SetAccessor).length==0)
+                        //         continue;
+                        //     var isPrivate = p.getDocumentationComment().some(c=>c.text.indexOf("@private")>=0);
+                        //     if(isPrivate)
+                        //         continue;
+
+                        //     console.log(name);
+
+                        //     if((p.flags & ts.SymbolFlags.Property)&&p.valueDeclaration&&((<ts.VariableDeclaration>p.valueDeclaration).initializer==null)){
+                        //         console.log("\t",name," == null");
+                        //     }
+
+                        // }
                     }
 
-            }
+                }
 
-            ts.forEachChild(node, delintNode);
         }
+
+        ts.forEachChild(node, delintNode);
     }
 }
 
@@ -143,10 +146,9 @@ function watch(rootFileNames: string[], options: ts.CompilerOptions) {
 const currentDirectoryFiles = fs.readdirSync(process.cwd()).
     filter(fileName => fileName.length >= 3 && fileName.substr(fileName.length - 3, 3) === ".ts");
 
-console.log(Date.now());
 // Start the watcher
 watch([
     `./test/eui.d.ts`,
-    `./test/gret.d.ts`,
-    `./test/test.ts`
+    // `./test/gret.d.ts`,
+    // `./test/test.ts`
 ], { module: ts.ModuleKind.CommonJS });
