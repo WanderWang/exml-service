@@ -5,7 +5,8 @@
         "noImplicitAny": false,
         "sourceMap": true,
         "outDir": "out",
-        "jsx":"preserve"
+        "jsx":"preserve",
+        "rootDir": "src"
     },
     "exclude": [
         "node_modules","test"
