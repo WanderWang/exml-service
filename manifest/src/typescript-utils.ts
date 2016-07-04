@@ -27,6 +27,16 @@ export function getHeritageClause(clauses: ts.NodeArray<ts.HeritageClause>, kind
     return undefined;
 }
 
+export function getFullyQualifiedNameOfType(type:ts.Type,checker:ts.TypeChecker){
+    let symbol = type.getSymbol();
+    if (symbol){
+        return checker.getFullyQualifiedName(symbol);
+    }
+    else{
+        return checker.typeToString(type);
+    }
+}
+
 export function getImplementedInterfaces(type: ts.Type,checker:ts.TypeChecker) {
     var superInterfaces: Array<any> = null;
     var result :Array<ts.ObjectType> = [];

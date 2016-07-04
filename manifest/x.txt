@@ -1,0 +1,575 @@
+found class: eui.sys.UIComponentImpl
+	 supper classes =>  egret.DisplayObject
+includeInLayout:boolean
+left:number
+right:number
+top:number
+bottom:number
+horizontalCenter:number
+verticalCenter:number
+percentWidth:number
+percentHeight:number
+explicitWidth:number
+explicitHeight:number
+minWidth:number
+maxWidth:number
+minHeight:number
+maxHeight:number
+found class: eui.BitmapLabel
+	 supper classes =>  egret.BitmapText
+_widthConstraint:any
+initializeUIValues:any
+includeInLayout:boolean
+left:number
+right:number
+top:number
+bottom:number
+horizontalCenter:number
+verticalCenter:number
+percentWidth:number
+percentHeight:number
+explicitWidth:number
+explicitHeight:number
+minWidth:number
+maxWidth:number
+minHeight:number
+maxHeight:number
+found class: eui.Component
+	 supper classes =>  egret.DisplayObjectContainer
+hostComponentKey:string
+skinName:any
+skin:Skin
+enabled:boolean
+currentState:string
+initializeUIValues:any
+includeInLayout:boolean
+left:number
+right:number
+top:number
+bottom:number
+horizontalCenter:number
+verticalCenter:number
+percentWidth:number
+percentHeight:number
+explicitWidth:number
+explicitHeight:number
+minWidth:number
+maxWidth:number
+minHeight:number
+maxHeight:number
+found class: eui.Button
+	 supper classes =>  eui.Component
+labelDisplay:IDisplayText
+_label:any
+label:string
+iconDisplay:Image
+_icon:any
+icon:string | Texture
+touchCaptured:any
+found class: eui.ToggleButton
+	 supper classes =>  eui.Button
+selected:boolean
+found class: eui.CheckBox
+	 supper classes =>  eui.ToggleButton
+found class: eui.Group
+	 supper classes =>  egret.DisplayObjectContainer
+elementsContent:DisplayObject[]
+layout:LayoutBase
+contentWidth:number
+contentHeight:number
+scrollEnabled:boolean
+scrollH:number
+scrollV:number
+numElements:number
+touchThrough:boolean
+states:State[]
+currentState:string
+hasState:(stateName: string) => boolean
+initializeStates:any
+commitCurrentState:any
+initializeUIValues:any
+includeInLayout:boolean
+left:number
+right:number
+top:number
+bottom:number
+horizontalCenter:number
+verticalCenter:number
+percentWidth:number
+percentHeight:number
+explicitWidth:number
+explicitHeight:number
+minWidth:number
+maxWidth:number
+minHeight:number
+maxHeight:number
+found class: eui.DataGroup
+	 supper classes =>  eui.Group
+useVirtualLayout:boolean
+dataProvider:ICollection
+itemRenderer:any
+itemRendererSkinName:any
+itemRendererFunction:(item: any) => any
+numElements:number
+found class: eui.EditableText
+	 supper classes =>  egret.TextField
+_widthConstraint:any
+prompt:string
+promptColor:number
+initializeUIValues:any
+includeInLayout:boolean
+left:number
+right:number
+top:number
+bottom:number
+horizontalCenter:number
+verticalCenter:number
+percentWidth:number
+percentHeight:number
+explicitWidth:number
+explicitHeight:number
+minWidth:number
+maxWidth:number
+minHeight:number
+maxHeight:number
+found class: eui.ScrollBarBase
+	 supper classes =>  eui.Component
+thumb:UIComponent
+viewport:IViewport
+found class: eui.HScrollBar
+	 supper classes =>  eui.ScrollBarBase
+found class: eui.Range
+	 supper classes =>  eui.Component
+maximum:number
+minimum:number
+value:number
+snapInterval:number
+found class: eui.SliderBase
+	 supper classes =>  eui.Range
+trackHighlight:DisplayObject
+thumb:UIComponent
+track:UIComponent
+slideDuration:number
+liveDragging:boolean
+pendingValue:number
+found class: eui.HSlider
+	 supper classes =>  eui.SliderBase
+found class: eui.Image
+	 supper classes =>  egret.Bitmap
+scale9Grid:Rectangle
+fillMode:string
+sourceChanged:any
+_source:any
+source:string | Texture
+initializeUIValues:any
+includeInLayout:boolean
+left:number
+right:number
+top:number
+bottom:number
+horizontalCenter:number
+verticalCenter:number
+percentWidth:number
+percentHeight:number
+explicitWidth:number
+explicitHeight:number
+minWidth:number
+maxWidth:number
+minHeight:number
+maxHeight:number
+found class: eui.ItemRenderer
+	 supper classes =>  eui.Component
+_data:any
+data:any
+_selected:any
+selected:boolean
+itemIndex:number
+touchCaptured:any
+found class: eui.Label
+	 supper classes =>  egret.TextField
+_widthConstraint:any
+initializeUIValues:any
+includeInLayout:boolean
+left:number
+right:number
+top:number
+bottom:number
+horizontalCenter:number
+verticalCenter:number
+percentWidth:number
+percentHeight:number
+explicitWidth:number
+explicitHeight:number
+minWidth:number
+maxWidth:number
+minHeight:number
+maxHeight:number
+found class: eui.ListBase
+	 supper classes =>  eui.DataGroup
+requireSelection:boolean
+selectedIndex:number
+selectedItem:any
+found class: eui.List
+	 supper classes =>  eui.ListBase
+allowMultipleSelection:boolean
+_selectedIndices:any
+_proposedSelectedIndices:any
+selectedIndices:number[]
+selectedIndex:number
+selectedItems:any[]
+isValidIndex:any
+found class: eui.Panel
+	 supper classes =>  eui.Component
+elementsContent:DisplayObject[]
+closeButton:Button
+moveArea:DisplayObject
+titleDisplay:IDisplayText
+_title:any
+title:string
+offsetPointX:any
+offsetPointY:any
+found class: eui.ProgressBar
+	 supper classes =>  eui.Range
+thumb:UIComponent
+labelDisplay:Label
+_labelFunction:any
+labelFunction:(value: number, maximum: number) => string
+_slideDuration:any
+slideDuration:number
+_direction:any
+direction:string
+animation:any
+slideToValue:any
+animationValue:any
+found class: eui.RadioButton
+	 supper classes =>  eui.ToggleButton
+enabled:boolean
+_group:any
+group:RadioButtonGroup
+groupChanged:any
+_groupName:any
+groupName:string
+_value:any
+value:any
+found class: eui.Rect
+	 supper classes =>  eui.Component
+graphics:Graphics
+fillColor:number
+fillAlpha:number
+strokeColor:number
+strokeAlpha:number
+strokeWeight:number
+ellipseWidth:number
+ellipseHeight:number
+found class: eui.Scroller
+	 supper classes =>  eui.Component
+bounces:boolean
+throwSpeed:number
+horizontalScrollBar:HScrollBar
+verticalScrollBar:VScrollBar
+scrollPolicyV:string
+scrollPolicyH:string
+viewport:IViewport
+found class: eui.TabBar
+	 supper classes =>  eui.ListBase
+indexBeingUpdated:any
+found class: eui.TextInput
+	 supper classes =>  eui.Component
+textDisplay:EditableText
+promptDisplay:Label
+prompt:string
+displayAsPassword:boolean
+textColor:number
+maxChars:number
+maxWidth:number
+maxHeight:number
+text:string
+restrict:string
+isFocus:any
+found class: eui.ToggleSwitch
+	 supper classes =>  eui.ToggleButton
+found class: eui.UILayer
+	 supper classes =>  eui.Group
+found class: eui.VScrollBar
+	 supper classes =>  eui.ScrollBarBase
+found class: eui.VSlider
+	 supper classes =>  eui.SliderBase
+found class: eui.ViewStack
+	 supper classes =>  eui.Group
+layout:LayoutBase
+_selectedChild:any
+selectedChild:DisplayObject
+proposedSelectedIndex:any
+_selectedIndex:number
+selectedIndex:number
+length:number
+{ 'eui.sys.UIComponentImpl': 
+   { includeInLayout: 'boolean',
+     left: 'number',
+     right: 'number',
+     top: 'number',
+     bottom: 'number',
+     horizontalCenter: 'number',
+     verticalCenter: 'number',
+     percentWidth: 'number',
+     percentHeight: 'number',
+     explicitWidth: 'number',
+     explicitHeight: 'number',
+     minWidth: 'number',
+     maxWidth: 'number',
+     minHeight: 'number',
+     maxHeight: 'number' },
+  'eui.BitmapLabel': 
+   { _widthConstraint: 'any',
+     initializeUIValues: 'any',
+     includeInLayout: 'boolean',
+     left: 'number',
+     right: 'number',
+     top: 'number',
+     bottom: 'number',
+     horizontalCenter: 'number',
+     verticalCenter: 'number',
+     percentWidth: 'number',
+     percentHeight: 'number',
+     explicitWidth: 'number',
+     explicitHeight: 'number',
+     minWidth: 'number',
+     maxWidth: 'number',
+     minHeight: 'number',
+     maxHeight: 'number' },
+  'eui.Component': 
+   { hostComponentKey: 'string',
+     skinName: 'any',
+     skin: 'Skin',
+     enabled: 'boolean',
+     currentState: 'string',
+     initializeUIValues: 'any',
+     includeInLayout: 'boolean',
+     left: 'number',
+     right: 'number',
+     top: 'number',
+     bottom: 'number',
+     horizontalCenter: 'number',
+     verticalCenter: 'number',
+     percentWidth: 'number',
+     percentHeight: 'number',
+     explicitWidth: 'number',
+     explicitHeight: 'number',
+     minWidth: 'number',
+     maxWidth: 'number',
+     minHeight: 'number',
+     maxHeight: 'number' },
+  'eui.Button': 
+   { labelDisplay: 'IDisplayText',
+     _label: 'any',
+     label: 'string',
+     iconDisplay: 'Image',
+     _icon: 'any',
+     icon: 'string | Texture',
+     touchCaptured: 'any' },
+  'eui.ToggleButton': { selected: 'boolean' },
+  'eui.CheckBox': {},
+  'eui.Group': 
+   { elementsContent: 'DisplayObject[]',
+     layout: 'LayoutBase',
+     contentWidth: 'number',
+     contentHeight: 'number',
+     scrollEnabled: 'boolean',
+     scrollH: 'number',
+     scrollV: 'number',
+     numElements: 'number',
+     touchThrough: 'boolean',
+     states: 'State[]',
+     currentState: 'string',
+     hasState: '(stateName: string) => boolean',
+     initializeStates: 'any',
+     commitCurrentState: 'any',
+     initializeUIValues: 'any',
+     includeInLayout: 'boolean',
+     left: 'number',
+     right: 'number',
+     top: 'number',
+     bottom: 'number',
+     horizontalCenter: 'number',
+     verticalCenter: 'number',
+     percentWidth: 'number',
+     percentHeight: 'number',
+     explicitWidth: 'number',
+     explicitHeight: 'number',
+     minWidth: 'number',
+     maxWidth: 'number',
+     minHeight: 'number',
+     maxHeight: 'number' },
+  'eui.DataGroup': 
+   { useVirtualLayout: 'boolean',
+     dataProvider: 'ICollection',
+     itemRenderer: 'any',
+     itemRendererSkinName: 'any',
+     itemRendererFunction: '(item: any) => any',
+     numElements: 'number' },
+  'eui.EditableText': 
+   { _widthConstraint: 'any',
+     prompt: 'string',
+     promptColor: 'number',
+     initializeUIValues: 'any',
+     includeInLayout: 'boolean',
+     left: 'number',
+     right: 'number',
+     top: 'number',
+     bottom: 'number',
+     horizontalCenter: 'number',
+     verticalCenter: 'number',
+     percentWidth: 'number',
+     percentHeight: 'number',
+     explicitWidth: 'number',
+     explicitHeight: 'number',
+     minWidth: 'number',
+     maxWidth: 'number',
+     minHeight: 'number',
+     maxHeight: 'number' },
+  'eui.ScrollBarBase': { thumb: 'UIComponent', viewport: 'IViewport' },
+  'eui.HScrollBar': {},
+  'eui.Range': 
+   { maximum: 'number',
+     minimum: 'number',
+     value: 'number',
+     snapInterval: 'number' },
+  'eui.SliderBase': 
+   { trackHighlight: 'DisplayObject',
+     thumb: 'UIComponent',
+     track: 'UIComponent',
+     slideDuration: 'number',
+     liveDragging: 'boolean',
+     pendingValue: 'number' },
+  'eui.HSlider': {},
+  'eui.Image': 
+   { scale9Grid: 'Rectangle',
+     fillMode: 'string',
+     sourceChanged: 'any',
+     _source: 'any',
+     source: 'string | Texture',
+     initializeUIValues: 'any',
+     includeInLayout: 'boolean',
+     left: 'number',
+     right: 'number',
+     top: 'number',
+     bottom: 'number',
+     horizontalCenter: 'number',
+     verticalCenter: 'number',
+     percentWidth: 'number',
+     percentHeight: 'number',
+     explicitWidth: 'number',
+     explicitHeight: 'number',
+     minWidth: 'number',
+     maxWidth: 'number',
+     minHeight: 'number',
+     maxHeight: 'number' },
+  'eui.ItemRenderer': 
+   { _data: 'any',
+     data: 'any',
+     _selected: 'any',
+     selected: 'boolean',
+     itemIndex: 'number',
+     touchCaptured: 'any' },
+  'eui.Label': 
+   { _widthConstraint: 'any',
+     initializeUIValues: 'any',
+     includeInLayout: 'boolean',
+     left: 'number',
+     right: 'number',
+     top: 'number',
+     bottom: 'number',
+     horizontalCenter: 'number',
+     verticalCenter: 'number',
+     percentWidth: 'number',
+     percentHeight: 'number',
+     explicitWidth: 'number',
+     explicitHeight: 'number',
+     minWidth: 'number',
+     maxWidth: 'number',
+     minHeight: 'number',
+     maxHeight: 'number' },
+  'eui.ListBase': 
+   { requireSelection: 'boolean',
+     selectedIndex: 'number',
+     selectedItem: 'any' },
+  'eui.List': 
+   { allowMultipleSelection: 'boolean',
+     _selectedIndices: 'any',
+     _proposedSelectedIndices: 'any',
+     selectedIndices: 'number[]',
+     selectedIndex: 'number',
+     selectedItems: 'any[]',
+     isValidIndex: 'any' },
+  'eui.Panel': 
+   { elementsContent: 'DisplayObject[]',
+     closeButton: 'Button',
+     moveArea: 'DisplayObject',
+     titleDisplay: 'IDisplayText',
+     _title: 'any',
+     title: 'string',
+     offsetPointX: 'any',
+     offsetPointY: 'any' },
+  'eui.ProgressBar': 
+   { thumb: 'UIComponent',
+     labelDisplay: 'Label',
+     _labelFunction: 'any',
+     labelFunction: '(value: number, maximum: number) => string',
+     _slideDuration: 'any',
+     slideDuration: 'number',
+     _direction: 'any',
+     direction: 'string',
+     animation: 'any',
+     slideToValue: 'any',
+     animationValue: 'any' },
+  'eui.RadioButton': 
+   { enabled: 'boolean',
+     _group: 'any',
+     group: 'RadioButtonGroup',
+     groupChanged: 'any',
+     _groupName: 'any',
+     groupName: 'string',
+     _value: 'any',
+     value: 'any' },
+  'eui.Rect': 
+   { graphics: 'Graphics',
+     fillColor: 'number',
+     fillAlpha: 'number',
+     strokeColor: 'number',
+     strokeAlpha: 'number',
+     strokeWeight: 'number',
+     ellipseWidth: 'number',
+     ellipseHeight: 'number' },
+  'eui.Scroller': 
+   { bounces: 'boolean',
+     throwSpeed: 'number',
+     horizontalScrollBar: 'HScrollBar',
+     verticalScrollBar: 'VScrollBar',
+     scrollPolicyV: 'string',
+     scrollPolicyH: 'string',
+     viewport: 'IViewport' },
+  'eui.TabBar': { indexBeingUpdated: 'any' },
+  'eui.TextInput': 
+   { textDisplay: 'EditableText',
+     promptDisplay: 'Label',
+     prompt: 'string',
+     displayAsPassword: 'boolean',
+     textColor: 'number',
+     maxChars: 'number',
+     maxWidth: 'number',
+     maxHeight: 'number',
+     text: 'string',
+     restrict: 'string',
+     isFocus: 'any' },
+  'eui.ToggleSwitch': {},
+  'eui.UILayer': {},
+  'eui.VScrollBar': {},
+  'eui.VSlider': {},
+  'eui.ViewStack': 
+   { layout: 'LayoutBase',
+     _selectedChild: 'any',
+     selectedChild: 'DisplayObject',
+     proposedSelectedIndex: 'any',
+     _selectedIndex: 'number',
+     selectedIndex: 'number',
+     length: 'number' } }

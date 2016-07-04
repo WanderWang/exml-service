@@ -1,10 +1,9 @@
 import * as fs from "fs";
 import * as ts from "typescript";
-import * as utils from "./utils/typescript";
+import * as utils from "./typescript-utils";
 
 
 var baseTypeCache: ts.Map<ts.Map<boolean>> = {};
-
 function hasBaseTypes(theType: ts.Type, typeToFind: string, checker: ts.TypeChecker) {
     var q: string[] = [];
     var result = find(theType);
@@ -75,7 +74,7 @@ function watch(rootFileNames: string[], options: ts.CompilerOptions) {
 var data = {};
 
 
-function delint(program, sourceFile: ts.SourceFile, base: string) {
+function delint(program: ts.Program, sourceFile: ts.SourceFile, base: string) {
 
     var checker = program.getTypeChecker();
     delintNode(sourceFile);
@@ -88,22 +87,25 @@ function delint(program, sourceFile: ts.SourceFile, base: string) {
                 if (!(node.flags & ts.NodeFlags.Abstract) && hasBaseTypes(theType, base, checker)) {
                     var className = checker.getFullyQualifiedName(checker.getTypeAtLocation(node).getSymbol());
                     var superTypes = checker.getBaseTypes(<ts.InterfaceType>theType);
-                    console.log("found class: " + className);
-                    data[className] = {};
-                    superTypes.forEach(t => console.log("\t supper classes => ", checker.getFullyQualifiedName(t.getSymbol())));
+
+                    var __single__data = {};
+                    data[className] = __single__data;
+
+                    superTypes.forEach(t => __single__data["super"] = checker.getFullyQualifiedName(t.getSymbol()));
 
                     var props = theType.getSymbol().members;
 
                     for (var name in props) {
 
-                        if (name.indexOf("$") == 0)
+                        if (name.indexOf("$") == 0 || name.indexOf("_") == 0)
                             continue;
 
                         var p = props[name];
 
                         if (p.flags & ts.SymbolFlags.Property) {
-                            var result = checker.getTypeAtLocation(p.declarations[0])
-                            console.log(`${p.name}:${checker.typeToString(result)}`)
+                            var type = checker.getTypeAtLocation(p.declarations[0])
+                            let typeString = utils.getFullyQualifiedNameOfType(type, checker);
+                            __single__data[p.name] = typeString;
                             // console.log()
 
                         }
@@ -146,9 +148,23 @@ function delint(program, sourceFile: ts.SourceFile, base: string) {
 const currentDirectoryFiles = fs.readdirSync(process.cwd()).
     filter(fileName => fileName.length >= 3 && fileName.substr(fileName.length - 3, 3) === ".ts");
 
-// Start the watcher
-watch([
-    `./test/eui.d.ts`,
-    // `./test/gret.d.ts`,
-    // `./test/test.ts`
-], { module: ts.ModuleKind.CommonJS });
+
+
+export function run() {
+    // Start the watcher
+    watch([
+        `./test/egret.d.ts`,
+        `./test/eui.d.ts`,
+
+        // `./test/test.ts`
+    ], { module: ts.ModuleKind.CommonJS });
+
+    //todo 这里存在重大隐患，需要尽快修复
+
+    return new Promise((reslove,rejct)=>{
+
+        setTimeout(()=>reslove(data),1000);
+    });
+
+    
+}
